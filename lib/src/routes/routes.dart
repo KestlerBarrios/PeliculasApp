@@ -3,6 +3,6 @@ import 'package:peliculas/src/pages/home_page.dart';
 
 Map<String, WidgetBuilder> getRoutes() {
   return {
-  '/': (BuildContext context) =>HomePage(),
+  '/': (BuildContext context) => HomePage(),
   };
 }
