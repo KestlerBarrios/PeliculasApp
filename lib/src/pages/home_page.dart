@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:peliculas/src/providers/peliculas_providers.dart';
 import 'package:peliculas/src/widgets/card_swiper_widget.dart';
+import 'package:peliculas/src/widgets/movie_horizontal.dart';
 
 class HomePage extends StatelessWidget {
   final peliculasProvider = PeliculasProvider();
 
   @override
   Widget build(BuildContext context) {
+    peliculasProvider.getPopulares();
     return Scaffold(
       appBar: AppBar(
         title: Text('Peliculas  App'),
@@ -35,7 +37,7 @@ class HomePage extends StatelessWidget {
           return Container(
             height: 400.0,
             child: Center(
-              child: CircularProgressIndicator(),
+              child: Center(child: CircularProgressIndicator()),
             ),
           );
         }
@@ -47,16 +49,29 @@ class HomePage extends StatelessWidget {
     return Container(
       width: double.infinity,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Populares',
-            style: Theme.of(context).textTheme.headline6,
+          Container(
+            padding: EdgeInsets.only(left: 20.0),
+            child: Text(
+              'Populares',
+              style: Theme.of(context).textTheme.headline6,
+            ),
           ),
-          FutureBuilder(
-            future: peliculasProvider.getPopulares(),
+          SizedBox(
+            height: 15.0,
+          ),
+          StreamBuilder(
+            stream: peliculasProvider.popularesStream,
             builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
-              snapshot.data.forEach((element)=> print(element.title) );
-              return Container();
+              if (snapshot.hasData) {
+                return MovieHorizontal(
+                  peliculas: snapshot.data,
+                  siguientePagina: peliculasProvider.getPopulares,
+                );
+              } else {
+                return Center(child: CircularProgressIndicator());
+              }
             },
           ),
         ],
