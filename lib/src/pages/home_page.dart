@@ -13,7 +13,14 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Peliculas  App'),
         backgroundColor: Colors.indigoAccent,
-        actions: [IconButton(icon: Icon(Icons.search), onPressed: () {})],
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              // showSearch(context: null, delegate: null)
+            },
+          ),
+        ],
       ),
       body: Container(
         child: Column(
