@@ -16,6 +16,7 @@ class Peliculas {
 }
 
 class Pelicula {
+  String uniqueId;
   int voteCount;
   int id;
   bool video;
@@ -71,7 +72,6 @@ class Pelicula {
       return 'https://image.tmdb.org/t/p/w500/$posterPath';
     }
   }
-
 
   getBackgroundImg() {
     if (posterPath == null) {
