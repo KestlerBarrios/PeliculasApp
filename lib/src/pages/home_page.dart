@@ -52,14 +52,11 @@ class HomePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: EdgeInsets.only(left: 20.0),
+            padding: EdgeInsets.only(left: 20.0, bottom: 9.0),
             child: Text(
               'Populares',
               style: Theme.of(context).textTheme.headline6,
             ),
-          ),
-          SizedBox(
-            height: 15.0,
           ),
           StreamBuilder(
             stream: peliculasProvider.popularesStream,
