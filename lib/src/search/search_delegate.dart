@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:peliculas/src/models/pelicula_model.dart';
+import 'package:peliculas/src/providers/peliculas_providers.dart';
 
 class DataSearch extends SearchDelegate {
   String seleccion = '';
+  final peliculasProvider = PeliculasProvider();
 
   final peliculas = [
     'Batman',
@@ -57,6 +60,45 @@ class DataSearch extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
+    if (query.isEmpty) {
+      return Container();
+    }
+    return FutureBuilder(
+      future: peliculasProvider.buscarPelicula(query),
+      builder: (BuildContext context, AsyncSnapshot<List<Pelicula>> snapshot) {
+        if (snapshot.hasData) {
+          final peliculas = snapshot.data;
+          return ListView(
+            children: peliculas.map((pelicula) {
+              return ListTile(
+                title: Text(pelicula.title),
+                subtitle: Text(pelicula.originalTitle),
+                leading: FadeInImage(
+                  placeholder: AssetImage('assets/img/no-image.png'),
+                  image: NetworkImage(
+                    pelicula.getPosterImg(),
+                  ),
+                  height: 50.0,
+                  fit: BoxFit.contain,
+                ),
+                onTap: () {
+                  close(context, null);
+                  pelicula.uniqueId = '';
+                  Navigator.pushNamed(context, '/detalle', arguments: pelicula);
+                },
+              );
+            }).toList(),
+          );
+        } else {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    );
+  }
+
+  Widget buildSuggestionsLocal(BuildContext context) {
     // Sugerencias cuando la persona escribe
 
     final listaSugerida = (query.isEmpty)
